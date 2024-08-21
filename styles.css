@@ -1,0 +1,266 @@
+body {
+    font-family: sans-serif;
+    text-align: center;
+    background-color: #0E2F42;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.page {
+    display: none;
+}
+
+#board {
+    width: 240px;
+    height: 300px;
+    margin: 10px auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+}
+
+.tile {
+    border: 2px solid #ccc;
+    width: 40px;
+    height: 40px;
+    margin: 2px;
+    color: #333;
+    font-size: 24px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.correct {
+    background-color: #6AAA64;
+    color: white;
+    border-color: #6AAA64;
+}
+
+.present {
+    background-color: #C9B458;
+    color: white;
+    border-color: #C9B458;
+}
+
+.absent {
+    background-color: #787C7E;
+    color: white;
+    border-color: #787C7E;
+}
+
+.keyboard-row {
+    width: 400px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    background-color: white;
+}
+
+.key-tile, .enter-key-tile {
+    width: 30px;
+    height: 30px;
+    margin: 3px;
+    border: 2px solid #ccc;
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.key-tile:hover, .enter-key-tile:hover {
+    background-color: #f0f0f0;
+}
+
+.enter-key-tile {
+    width: 80px;
+    height: 30px;
+}
+
+button {
+    margin: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #077210;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 70%;
+    height: auto;
+    max-width: 300px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+#answer {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 20px;
+    animation: fadeIn 1s ease;
+    color: white;
+}
+
+.instru {
+    width: 75%;
+    margin: auto;
+    color: white;
+}
+
+/* Overlay Styles */
+.overlay {
+    position: fixed;
+    top: -40px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.5s;
+}
+
+.overlay-content {
+    background-color: #0E2F42;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+#overlay-message {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.overlay button {
+    margin-top: 10px;
+}
+
+.overlay.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Introduction Page Styles */
+.intro-image {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    margin: -10px 0;
+}
+
+.intro-text {
+    text-align: left;
+    margin: 0 auto;
+    max-width: 600px;
+    color: white;
+}
+
+.intro-text h3 {
+    font-size: 28px;
+}
+
+.intro-text p, .intro-text ul {
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.intro-text ul {
+    padding-left: 20px;
+}
+
+.message-win {
+    color: #45D94C;
+    font-size: 36px;
+}
+
+.message-lose,
+.message-giveup {
+    color: white;
+    font-size: 36px;
+}
+
+.restofmessage {
+    color: white;
+    font-size: 16px;
+}
+
+.logo {
+    width: 100px;
+    height: auto;
+    margin: 10px;
+}
+
+/* Tooltip Styles */
+.tooltip-icon {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    background-color: #6AAA64;
+    color: white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 24px;
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+    
+ 
+}
+
+.tooltip-content {
+    position: absolute;
+    top: 100px;
+    right: 50px;
+    background-color: white;
+    color: black;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+    display: none;
+    text-align: left;
+}
+
+.tooltip-content .tile {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}

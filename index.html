@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WORDLE</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="scripts.js"></script>
+</head>
+<body>
+    <!-- Introduction Overlay -->
+    <div id="intro-overlay" class="overlay show">
+        <div class="overlay-content">
+            <img src="logo.png" alt="Wordle Game Image" class="intro-image">
+            <div class="intro-text">
+                <p>Finde das richtige wort in 6 versuchen.</p>
+                <p>Tipp: Es wird weihnachtlich</p>
+                
+                    
+            </div>
+            
+            <button type="button" id="start-game">START</button>
+        </div>
+    </div>
+
+    <img src="logo.png" alt="" class="logo">
+    <div id="board"></div>
+    <h1 id="answer"></h1>
+    <div id="keyboard-container"></div>
+
+         <!-- Tooltip Icon -->
+         <div class="tooltip-icon" id="tooltip-icon">i</div>
+         <!-- Tooltip Content -->
+         <div class="tooltip-content" id="tooltip-content">
+             <p><span class="tile correct"></span> - Richtiger Buchstabe und richtige Position</p>
+             <p><span class="tile present"></span> - Richtiger Buchstabe, aber falsche Position</p>
+             <p><span class="tile absent"></span> - Buchstabe ist nicht im Wort enthalten</p>
+         </div>
+
+    <div class="instru">
+     
+        <p>Die Umlaute Ä, Ö und Ü wurden durch AE, OE und UE ersetzt, und das ß durch SS.</p>
+    </div>
+
+    <button type="button" id="give-up">AUFGEBEN</button>
+
+  
+
+    <!-- Game Over Overlay -->
+    <div id="overlay" class="overlay">
+        <div class="overlay-content">
+            <h2 id="overlay-message"></h2>
+            <button type="button" id="call-to-action">CALL TO ACTION</button>
+            <button type="button" id="play-again">NOCHMAL SPIELEN</button>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
