@@ -5,17 +5,9 @@ var row = 0; //current guess (attempt #)
 var col = 0; //current letter for that attempt
 
 var gameOver = false;
-// they are 77 words in the wordlist 
-// carefull : all words need to be lowercase 
-var wordList = [
-    "glanz", "kerze", "licht", "nacht", "engel", "stern", "feier", "tanne", "kranz", "schaf", "musik", "kekse", 
-    "apfel", "santa", "bibel", "torte", "kamin", "feuer", "essen", "brote", "verse", "orgel", "sauce", "liebe", 
-    "puppe", "neffe", "onkel", "tante", "vater", "reise", "sahne", "zweig", "trost", "hirte", "wampe", "frost", 
-    "porto", "suppe", "witze", "spiel", "schal", "piste", "gebet", "tisch", "glatt", "gabel", "brief", "paket", 
-    "party", "jubel", "prost", "noten", "karte", "video", "enkel", "pizza", "ritual", "roman", "filme", "jahre", 
-    "blech", "segen", "tafel", "blitz", "socke", "werte", "rufen", "milch", "tasse", "kaffee", "abend", "elfen", 
-    "wohle"]
 
+// carefull : all words need to be lowercase 
+var wordList = ["glanz", "kerze", "licht", "nacht", "engel", "stern", "feier", "tanne", "kranz", "schaf", "musik", "kekse", "apfel", "santa", "bibel", "torte", "kamin", "feuer", "essen", "brote", "verse", "orgel", "sauce", "liebe", "puppe", "neffe", "onkel", "tante", "vater", "reise", "sahne", "zweig", "trost", "hirte", "wampe", "frost", "porto", "suppe", "witze", "spiel", "schal", "piste", "gebet", "tisch", "glatt", "gabel", "brief", "paket", "party", "jubel", "prost", "noten", "karte", "video", "enkel", "pizza", "ritual","filme", "jahre", "blech", "segen", "tafel",  "socke", "werte", "milch", "tasse", "abend", "elfen","hobby","mistel","teddy","honig","kakao","kugel","jesus","stroh","paket","orgel","christ","glanz","wurst","aroma"];
 
 
 
@@ -107,6 +99,10 @@ function initialize() {
         }
         keyboardContainer.appendChild(keyboardRow);
     }
+
+    // Set the first active tile
+    let firstTile = document.getElementById("0-0");
+    firstTile.classList.add("active-tile");
 }
 
 function processKey() {
@@ -126,19 +122,38 @@ function processInput(e) {
             }
         }
     } else if (e.code == "Backspace") {
-        if (0 < col && col <= width) {
+        if (col > 0) {
             col -= 1;
+            let currTile = document.getElementById(row.toString() + '-' + col.toString());
+            currTile.innerText = "";
         }
-        let currTile = document.getElementById(row.toString() + '-' + col.toString());
-        currTile.innerText = "";
     } else if (e.code == "Enter") {
         update();
     }
+
+    // Update the active tile after processing input
+    updateActiveTile();
 
     if (!gameOver && row == height) {
         gameOver = true;
         document.getElementById("answer").innerText = word;
         showOverlay("Du hast verloren!<br>Das Wort war: " + word, "lose");
+    }
+}
+
+function updateActiveTile() {
+    // Remove the 'active-tile' class from all tiles
+    let tiles = document.getElementsByClassName("tile");
+    for (let i = 0; i < tiles.length; i++) {
+        tiles[i].classList.remove("active-tile");
+    }
+
+    // If the game is not over, set the active tile
+    if (!gameOver) {
+        if (col < width) {
+            let currTile = document.getElementById(row.toString() + '-' + col.toString());
+            currTile.classList.add("active-tile");
+        }
     }
 }
 
@@ -157,6 +172,24 @@ function update() {
 
     if (!guessList.map(word => word.toLowerCase()).includes(guess)) {
         document.getElementById("answer").innerText = "Nicht in der Wortliste";
+        
+        // Add the 'invalid-word' class to the tiles
+        for (let c = 0; c < width; c++) {
+            let currTile = document.getElementById(row.toString() + '-' + c.toString());
+            currTile.classList.add("invalid-word");
+        }
+
+        // Clear the tiles after 1 second
+        setTimeout(() => {
+            for (let c = 0; c < width; c++) {
+                let currTile = document.getElementById(row.toString() + '-' + c.toString());
+                currTile.innerText = "";
+                currTile.classList.remove("invalid-word");
+            }
+            col = 0; // Reset the column index
+            updateActiveTile(); // Update the active tile
+        }, 1000);
+        
         return;
     }
 
@@ -172,6 +205,7 @@ function update() {
         }
     }
 
+    // First pass: check for correct letters in correct positions
     for (let c = 0; c < width; c++) {
         let currTile = document.getElementById(row.toString() + '-' + c.toString());
         let letter = currTile.innerText;
@@ -185,13 +219,9 @@ function update() {
             correct += 1;
             letterCount[letter] -= 1;
         }
-
-        if (correct == width) {
-            gameOver = true;
-            showOverlay("Herzlichen Glückwunsch, du hast gewonnen!<br>Das Wort war: " + word, "win");
-        }
     }
 
+    // Second pass: check for correct letters in wrong positions
     for (let c = 0; c < width; c++) {
         let currTile = document.getElementById(row.toString() + '-' + c.toString());
         let letter = currTile.innerText;
@@ -212,8 +242,14 @@ function update() {
         }
     }
 
-    row += 1;
-    col = 0;
+    if (correct == width) {
+        gameOver = true;
+        showOverlay("Herzlichen Glückwunsch, du hast gewonnen!<br>Das Wort war: " + word, "win");
+    } else {
+        row += 1;
+        col = 0;
+        updateActiveTile(); // Update the active tile after moving to the next row
+    }
 }
 
 function showOverlay(message, type) {
